@@ -2,11 +2,11 @@ import { Body, Controller, Get, Post, Req } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { UserService } from "./user.service";
 import { LoginUserDTO } from "./dto/login-user.dto";
-import { priceService } from "../price/price.service";
+import { PriceService } from "../price/price.service";
 
 @Controller("user")
 export class UserController {
-    constructor(private readonly userService: UserService, private readonly priceService: priceService) { }
+    constructor(private readonly userService: UserService, private readonly priceService: PriceService) { }
 
     @Post("create")
     create(@Body() createUserDto: CreateUserDTO) {

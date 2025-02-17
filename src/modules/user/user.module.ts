@@ -6,9 +6,10 @@ import {  UserSchema } from './user.schema';
 import { AuthModule } from '../auth/auth.module';
 import { PriceModule } from '../price/price.module';
 import { ConfigurationModule } from '../configuration/configuration.module';
+import { OrganizationModule } from '../organization/organization.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]), AuthModule, PriceModule, ConfigurationModule ],
+  imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]), AuthModule, PriceModule, ConfigurationModule,OrganizationModule],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],

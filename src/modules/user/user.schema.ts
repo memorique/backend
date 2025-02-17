@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const UserSchema = new Schema<User>({
   userId: { type: String, required: true, unique: true, default: uuidv4 },
-  organizationId: { type: String, required: true, default: uuidv4 },
+  organizationId: { type: String, required: true },
   fullName: { type: String },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },

@@ -6,15 +6,18 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "../auth/auth.service";
 import { LoginUserDTO } from "./dto/login-user.dto";
 import { ConfigurationService } from "../configuration/configuration.service";
-import { priceService } from "../price/price.service";
+import { PriceService } from "../price/price.service";
+import { OrganizationService } from "../organization/organization.service";
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>, private readonly authService: AuthService, private readonly configurationService: ConfigurationService, private readonly priceService: priceService) {
+  constructor(@InjectModel('User') private readonly userModel: Model<User>, private readonly authService: AuthService, private readonly configurationService: ConfigurationService, private readonly priceService: PriceService, private readonly organizationService:OrganizationService) {
   }
 
   async create(createUserDto: CreateUserDTO): Promise<any> {
-    const newUser = new this.userModel(createUserDto);
+    const organization = await this.organizationService.create();
+    const userObj = {...createUserDto, organizationId:organization.organizationId}
+    const newUser = new this.userModel(userObj);
     const user = await newUser.save();
     const defaultPrices = await this.configurationService.getDefaultPriceList();
     const prices = await this.priceService.addDefaultPrices(user.organizationId, defaultPrices);

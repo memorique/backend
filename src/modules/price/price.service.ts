@@ -4,7 +4,7 @@ import { Model } from "mongoose";
 import { Price } from "./price.schema";
 
 @Injectable()
-export class priceService {
+export class PriceService {
     constructor(@InjectModel("Price") private readonly priceModel: Model<Price>) { }
 
     async addDefaultPrices(prganizationId: string, defaultPriceList: Price[]): Promise<Price[]> {
