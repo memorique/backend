@@ -1,17 +1,18 @@
-import { Body, Controller, Get, Post, Req } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, UnauthorizedException } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { UserService } from "./user.service";
 import { LoginUserDTO } from "./dto/login-user.dto";
-import { PriceService } from "../price/price.service";
+import { AuthService } from "../auth/auth.service";
+import { User } from "./user.entity";
 
 @Controller("user")
 export class UserController {
-    constructor(private readonly userService: UserService, private readonly priceService: PriceService) { }
+    constructor(private readonly userService: UserService, private authService: AuthService) { }
 
     @Post("create")
     create(@Body() createUserDto: CreateUserDTO) {
         try {
-            return this.userService.create(createUserDto);
+            //   return this.userService.create(createUserDto);
         }
         catch (err) {
             console.log(err);
@@ -19,9 +20,22 @@ export class UserController {
     }
 
     @Post("login")
-    login(@Body() loginUserDTO: LoginUserDTO) {
+    async login(@Body() loginUserDTO: LoginUserDTO) {
         try {
-            return this.userService.login(loginUserDTO);
+            const result = await this.userService.login(loginUserDTO);
+            const user = result[0][0];
+            if (user?.error) {
+                throw new UnauthorizedException('Invalid credentials');
+            }
+            const token = this.authService.generateToken(user);
+
+            return {
+                user: {
+                    name: user.name,
+                    email: user.email
+                },
+                token
+            };
         }
         catch (err) {
             console.log(err);
@@ -32,10 +46,10 @@ export class UserController {
     @Get("getLoggedInUser")
     async getLoggedInUser(@Req() req: any) {
         try {
-            const { userId, organizationId } = req.user;
-            const user = await this.userService.getUserById(userId);
-            const prices = await this.priceService.getPriceList(organizationId);
-            return { user: { firstName: user.firstName, lastName: user.lastName, email: user.email }, prices }
+            // this.userService.login({email:"test@gmail.com",password:"w2323"});
+            // const { userId, organizationId } = req.user;
+            //  const user = await this.userService.getUserById(userId);
+            //return { user: { firstName: user.firstName, lastName: user.lastName, email: user.email }, prices }
         }
         catch (err) {
             console.log(err);
