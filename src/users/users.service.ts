@@ -1,26 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { Repository } from 'typeorm';
+import { Organization } from 'src/organization/entities/organization.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+    @InjectRepository(Organization)
+    private organizationRepository: Repository<Organization>,
+  ) {}
 
-  findAll() {
-    return `This action returns all users`;
-  }
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const { email, password, firstName, lastName, organizationId } =
+      createUserDto;
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+    // Find the organization by ID
+    const organization = await this.organizationRepository.findOne({
+      where: { id: organizationId },
+    });
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+    if (!organization) {
+      throw new NotFoundException('Organization not found');
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    // Hash the password before saving
+    const saltRounds = 10; // Higher value means more security but slower
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const user = new User();
+    user.name = firstName + ' ' + lastName;
+    user.password = hashedPassword;
+    user.email = email;
+    user.roles = [];
+    user.organization = organization;
+
+    return this.usersRepository.save(user);
   }
 }
