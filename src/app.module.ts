@@ -22,7 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         host: configService.get<string>('DB_HOST', '127.0.0.1'),
         port: configService.get<number>('DB_PORT', 3306),
         username: configService.get<string>('DB_USER', 'root'),
-        password: configService.get<string>('DB_PASS', ''), // Empty string for no password
+        password: configService.get<string>('DB_PASSWORD', ''), // Empty string for no password
         database: configService.get<string>('DB_NAME', 'users'),
         autoLoadEntities: true,
         synchronize: true, // Use only in development

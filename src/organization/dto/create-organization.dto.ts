@@ -2,7 +2,7 @@ import { IsEmail, IsString, IsNotEmpty, Matches } from 'class-validator';
 
 export class CreateOrganizationDto {
   @IsString()
-  @IsNotEmpty({ message: 'Organization name is required' })
+  @IsNotEmpty({ message: 'Organizations name is required' })
   name: string;
 
   @IsEmail({}, { message: 'Invalid email format' })

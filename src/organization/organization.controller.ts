@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
-import { Organization } from './entities/organization.entity';
+import { Organizations } from './entities/organization.entity';
 
 @Controller('organization')
 export class OrganizationController {
@@ -10,13 +10,13 @@ export class OrganizationController {
   @Post()
   async createOrganization(
     @Body() createOrganizationDto: CreateOrganizationDto,
-  ): Promise<Organization> {
+  ): Promise<Organizations> {
     console.log({ createOrganizationDto });
     return this.organizationService.createOrganization(createOrganizationDto);
   }
 
   @Get()
-  async getOrganizations(): Promise<Organization[]> {
+  async getOrganizations(): Promise<Organizations[]> {
     return this.organizationService.getOrganizations();
   }
 }

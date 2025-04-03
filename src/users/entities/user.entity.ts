@@ -1,4 +1,4 @@
-import { Organization } from 'src/organization/entities/organization.entity';
+import { Organizations } from 'src/organization/entities/organization.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -22,11 +22,11 @@ export class User {
   @Column()
   name: string;
 
-  @Column('simple-json') // Store as JSON
-  roles: string[];
+  @Column() 
+  role: string;
 
-  @ManyToOne(() => Organization, (organization) => organization.users)
-  organization: Organization;
+  @ManyToOne(() => Organizations, (organization) => organization.users)
+  organization: Organizations;
 
   @CreateDateColumn()
   createdAt: Date;

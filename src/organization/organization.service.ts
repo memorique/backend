@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Organization } from './entities/organization.entity';
+import { Organizations } from './entities/organization.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrganizationService {
   constructor(
-    @InjectRepository(Organization)
-    private readonly organizationRepository: Repository<Organization>,
+    @InjectRepository(Organizations)
+    private readonly organizationRepository: Repository<Organizations>,
   ) {}
 
   async createOrganization(
     createOrganizationDto: CreateOrganizationDto,
-  ): Promise<Organization> {
+  ): Promise<Organizations> {
     const { name, contactEmail, contactPhone } = createOrganizationDto;
 
     const organization = this.organizationRepository.create({
@@ -25,7 +25,7 @@ export class OrganizationService {
     return this.organizationRepository.save(organization);
   }
 
-  async getOrganizations(): Promise<Organization[]> {
+  async getOrganizations(): Promise<Organizations[]> {
     return this.organizationRepository.find();
   }
 }
