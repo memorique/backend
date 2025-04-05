@@ -4,9 +4,13 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { EmailModule } from './email/email.module';
 import { OrganizationModule } from './organization/organization.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { EmailTemplateModule } from './email-template/email-template.module';
+import { OccasionModule } from './occasion/occasion.module';
+import { PriceModule } from './price/price.module';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 @Module({
   imports: [
@@ -30,10 +34,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     AuthModule,
     UsersModule,
-    EmailModule,
     OrganizationModule,
+    EmailTemplateModule,
+    OccasionModule,
+    PriceModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_FILTER, useClass: HttpExceptionFilter }],
 })
-export class AppModule {}
+export class AppModule { }

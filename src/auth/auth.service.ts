@@ -10,7 +10,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { email } });
@@ -22,16 +22,18 @@ export class AuthService {
 
   async login(user: User) {
     const payload = {
-      userId: user.user_id,
+      user_id: user.user_id,
       email: user.email,
+      organization_id: user.organization_id
     };
-    const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
+    console.log("payloadpayload",payload);
+    const accessToken = this.jwtService.sign(payload, { expiresIn: '1d' });
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
 
     return {
       accessToken,
       refreshToken,
-      data: { user: user.user_id, email: user.email },
+      data: { user_id: user.user_id, email: user.email, organization_id: user.organization_id },
     };
   }
 

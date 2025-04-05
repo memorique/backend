@@ -8,11 +8,13 @@ import {
 } from 'typeorm';
 import { Address } from './address.entity';
 import { User } from 'src/users/entities/user.entity';
+import { EmailTemplate } from 'src/email-template/entities/email-template.entity';
+import { Occasion } from 'src/occasion/entities/occasion.entity';
 
-@Entity()
-export class Organizations {
+@Entity({ name: "organizations" })
+export class Organization {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  organization_id: string;
 
   @Column({ unique: true })
   name: string;
@@ -30,6 +32,12 @@ export class Organizations {
 
   @OneToMany(() => User, (user) => user.organization)
   users: User[];
+
+  @OneToMany(() => EmailTemplate, (emailTemplate) => emailTemplate.organization)
+  email_templates: EmailTemplate[];
+
+  @OneToMany(() => Occasion, (occasion) => occasion.organization)
+  occasion: Occasion[];
 
   @CreateDateColumn()
   createdAt: Date;

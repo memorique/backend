@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { Organizations } from 'src/organization/entities/organization.entity';
+import { Organization } from 'src/organization/entities/organization.entity';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -11,8 +11,8 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    @InjectRepository(Organizations)
-    private organizationRepository: Repository<Organizations>,
+    @InjectRepository(Organization)
+    private organizationRepository: Repository<Organization>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -21,11 +21,11 @@ export class UsersService {
 
     // Find the organization by ID
     const organization = await this.organizationRepository.findOne({
-      where: { id: organizationId },
+      where: { organization_id: organizationId },
     });
 
     if (!organization) {
-      throw new NotFoundException('Organizations not found');
+      throw new NotFoundException('Organization not found');
     }
 
     // Hash the password before saving

@@ -1,4 +1,6 @@
-import { Organizations } from 'src/organization/entities/organization.entity';
+import { EmailTemplate } from 'src/email-template/entities/email-template.entity';
+import { Occasion } from 'src/occasion/entities/occasion.entity';
+import { Organization } from 'src/organization/entities/organization.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,11 +8,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity({ name: "users" })
 export class User {
-  @PrimaryGeneratedColumn('uuid') // Generates a unique UUID
+  @PrimaryGeneratedColumn('uuid')
   user_id: string;
 
   @Column({ unique: true })
@@ -22,15 +26,25 @@ export class User {
   @Column()
   name: string;
 
-  @Column() 
+  @Column()
   role: string;
 
-  @ManyToOne(() => Organizations, (organization) => organization.users)
-  organization: Organizations;
+  @ManyToOne(() => Organization, (organization) => organization.users)
+  @JoinColumn({ name: "organization_id" })
+  organization: Organization;
+
+  @Column()
+  organization_id: string;
+
+  @OneToMany(() => EmailTemplate, (emailTemplates) => emailTemplates)
+  email_templates: EmailTemplate[];
+
+  @OneToMany(() => Occasion, (occasion) => occasion)
+  occasion: Occasion[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }

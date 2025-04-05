@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Organizations } from './organization.entity';
+import { Organization } from './organization.entity';
 
 @Entity()
 export class Address {
@@ -28,10 +28,10 @@ export class Address {
   @Column()
   zipCode: string;
 
-  @ManyToOne(() => Organizations, (organization) => organization.addresses, {
+  @ManyToOne(() => Organization, (organization) => organization.addresses, {
     onDelete: 'CASCADE',
   })
-  organization: Organizations;
+  organization: Organization;
 
   @CreateDateColumn()
   createdAt: Date;
