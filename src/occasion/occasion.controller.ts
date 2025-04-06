@@ -7,6 +7,7 @@ import {
   Param,
   Req,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { OccasionService } from './occasion.service';
 import { CreateOccasionDto } from './dto/create-occasion.dto';
@@ -52,5 +53,14 @@ export class OccasionController {
   ) {
     const user = request.user;
     return this.occasionService.update(id, updateOccasionDto, user);
+  }
+
+  @Delete(':id')
+  delete(
+    @Param('id') id: string,
+    @Req() request: Request & { user: Partial<User> },
+  ) {
+    const user = request.user;
+    return this.occasionService.delete(id, user.user_id);
   }
 }
