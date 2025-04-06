@@ -3,19 +3,19 @@ import { Organization } from "src/organization/entities/organization.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 
-@Entity({ name: "email_templates" })
+@Entity({name:"email_templates"})
 @Unique(['title'])
 export class EmailTemplate {
     @PrimaryGeneratedColumn('uuid')
     email_template_id: string;
 
-    @Column()
+    @Column({type:"text",collation:'utf8mb4_unicode_ci'})
     title: string;
 
-    @Column()
+    @Column({type:"text",  collation:'utf8mb4_unicode_ci'})
     subject: string;
 
-    @Column()
+    @Column({type:"text",collation:'utf8mb4_unicode_ci'})
     body: string;
 
     @ManyToOne(() => Occasion, (occasion) => occasion.emailTemplates)
