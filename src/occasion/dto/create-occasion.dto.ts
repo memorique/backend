@@ -1,10 +1,11 @@
-import {  IsBoolean, IsNotEmpty, IsString } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateOccasionDto {
-    @IsNotEmpty()
-    @IsString()
-    name: string;
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 
-    @IsBoolean()
-    is_active: boolean = true;
+  @IsBoolean()
+  @IsOptional()
+  is_active: boolean = true;
 }
