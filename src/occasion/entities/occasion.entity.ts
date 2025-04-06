@@ -6,11 +6,10 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, Pri
 @Entity({ name: "occasions" })
 @Unique(['name', 'organization_id'])
 export class Occasion {
-
     @PrimaryGeneratedColumn('uuid')
     occasion_id: string;
 
-    @Column()
+    @Column({ type: "text", collation: 'utf8mb4_unicode_ci' })
     name: string;
 
     @OneToMany(() => EmailTemplate, (emailTemplate) => emailTemplate.occasion)
@@ -30,7 +29,7 @@ export class Occasion {
     @Column()
     user_id: string;
 
-    @Column({default:true})
+    @Column({ default: true })
     is_active: Boolean;
 
     @CreateDateColumn()

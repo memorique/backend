@@ -13,7 +13,7 @@ export class UsersService {
     private usersRepository: Repository<User>,
     @InjectRepository(Organization)
     private organizationRepository: Repository<Organization>,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { email, password, firstName, lastName, organizationId } =
@@ -40,5 +40,9 @@ export class UsersService {
     user.organization = organization;
 
     return this.usersRepository.save(user);
+  }
+
+  async getSettings(user: Partial<User>) {
+    return this.usersRepository.findOne({ where: { user_id: user.user_id, organization_id: user.organization_id, is_delete: false }, select: ['invite_code', 'signature'] })
   }
 }

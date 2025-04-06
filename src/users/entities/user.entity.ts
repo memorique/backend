@@ -10,6 +10,7 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  BeforeInsert,
 } from 'typeorm';
 
 @Entity({ name: "users" })
@@ -29,6 +30,12 @@ export class User {
   @Column()
   role: string;
 
+  @Column()
+  invite_code: string;
+
+  @Column({ type: "text", collation: 'utf8mb4_unicode_ci' })
+  signature: string;
+
   @ManyToOne(() => Organization, (organization) => organization.users)
   @JoinColumn({ name: "organization_id" })
   organization: Organization;
@@ -42,9 +49,29 @@ export class User {
   @OneToMany(() => Occasion, (occasion) => occasion)
   occasion: Occasion[];
 
+  @Column({ default: false })
+  is_blocked: boolean;
+
+  @CreateDateColumn()
+  blocked_on: Date;
+
+  @Column({ default: true })
+  is_active: boolean;
+
+  @Column({ default: false })
+  is_delete: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @BeforeInsert()
+  generateDefaults() {
+    this.signature = `<p>Best regards</p><p>${this.name}</p>`;
+    const firstName = this.name?.split(' ')[0] ?? 'User';
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    this.invite_code = `${firstName}${randomNum}`;
+  }
 }

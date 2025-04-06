@@ -25,8 +25,9 @@ export class EmailTemplateService {
     return this.emailTemplateRepository.save(emailTemplate);
   }
 
-  findAll(user: Partial<User>) {
-    return this.emailTemplateRepository.find({ where: { organization_id: user.organization_id, is_delete: false } });
+  findAll(user: Partial<User>, query: any) {
+    const occasion_id = query?.occasionId;
+    return this.emailTemplateRepository.find({ where: { organization_id: user.organization_id, is_delete: false, ...(occasion_id && { occasion_id }) } });
   }
 
   findOne(id: string, user: Partial<User>) {
