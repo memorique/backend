@@ -13,7 +13,6 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'email_templates' })
-@Entity({ name: 'email_templates' })
 @Unique(['title'])
 export class EmailTemplate {
   @PrimaryGeneratedColumn('uuid')
