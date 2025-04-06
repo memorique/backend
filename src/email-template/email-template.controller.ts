@@ -19,7 +19,7 @@ import { User } from 'src/users/entities/user.entity';
 @Controller('emailTemplate')
 @UseGuards(JwtAuthGuard)
 export class EmailTemplateController {
-  constructor(private readonly emailTemplateService: EmailTemplateService) { }
+  constructor(private readonly emailTemplateService: EmailTemplateService) {}
 
   @Post('create')
   create(
@@ -31,7 +31,10 @@ export class EmailTemplateController {
   }
 
   @Get('list')
-  findAll(@Req() request: Request & { user: Partial<User> }, @Query() query: any) {
+  findAll(
+    @Req() request: Request & { user: Partial<User> },
+    @Query() query: any,
+  ) {
     const user = request.user;
     return this.emailTemplateService.findAll(user, query);
   }
