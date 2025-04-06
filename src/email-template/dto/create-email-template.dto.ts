@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateEmailTemplateDto {
   @IsString()
@@ -18,5 +18,6 @@ export class CreateEmailTemplateDto {
   body: string;
 
   @IsBoolean()
+  @IsOptional()
   is_active: boolean = true;
 }
