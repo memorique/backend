@@ -12,6 +12,7 @@ import { PriceModule } from './price/price.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { StripModule } from './strip/strip.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { StripModule } from './strip/strip.module';
     OccasionModule,
     PriceModule,
     StripModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_FILTER, useClass: HttpExceptionFilter }],

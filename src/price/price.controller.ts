@@ -1,20 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
 import { PriceService } from './price.service';
 import { CreatePriceDto } from './dto/create-price.dto';
 import { UpdatePriceDto } from './dto/update-price.dto';
+import { User } from 'src/users/entities/user.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('price')
+@UseGuards(JwtAuthGuard)
 export class PriceController {
-  constructor(private readonly priceService: PriceService) {}
+  constructor(private readonly priceService: PriceService) { }
 
-  @Post()
-  create(@Body() createPriceDto: CreatePriceDto) {
-    return this.priceService.create(createPriceDto);
+  @Post("create")
+  create(@Body() createPriceDto: CreatePriceDto, @Req() request: Request & { user: Partial<User> }) {
+    const user = request.user;
+    return this.priceService.create(createPriceDto, user);
   }
 
-  @Get()
-  findAll() {
-    return this.priceService.findAll();
+  @Get("list")
+  findAll(@Req() request: Request & { user: Partial<User> }) {
+    const user = request.user;
+    return this.priceService.findAll(user);
   }
 
   @Get(':id')

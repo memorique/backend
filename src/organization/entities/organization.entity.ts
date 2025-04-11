@@ -10,6 +10,7 @@ import { Address } from './address.entity';
 import { User } from 'src/users/entities/user.entity';
 import { EmailTemplate } from 'src/email-template/entities/email-template.entity';
 import { Occasion } from 'src/occasion/entities/occasion.entity';
+import { Price } from 'src/price/entities/price.entity';
 
 @Entity({ name: "organizations" })
 export class Organization {
@@ -38,6 +39,9 @@ export class Organization {
 
   @OneToMany(() => Occasion, (occasion) => occasion.organization)
   occasion: Occasion[];
+
+  @OneToMany(() => Price, (price) => price.organization)
+  prices: Price[];
 
   @CreateDateColumn()
   createdAt: Date;
