@@ -10,7 +10,7 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) { }
 
   @UseGuards(JwtAuthGuard)
-  @Post("create")
+  @Post("createLink")
   create(@Body() createOrderDto: CreateOrderDto, @Req() request: Request & { user: Partial<User> }) {
     const user = request.user;
     return this.orderService.create(createOrderDto,user);
