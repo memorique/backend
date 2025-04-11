@@ -24,7 +24,7 @@ export class PriceService {
   }
 
   findAll(user: Partial<User>) {
-    return this.priceRepository.find({ where: { organization_id: user.organization_id, is_delete:false } })
+    return this.priceRepository.find({ where: { organization_id: user.organization_id, is_delete: false }, select: ['price_id', 'order_price'] })
   }
 
   findOne(id: number) {
