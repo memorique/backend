@@ -8,6 +8,11 @@ export enum OrderStatus {
     DELIVERED = "delivered",
 }
 
+export enum SendVia {
+    GENERATE_LINK = 1,
+    SEND_EMAIL,
+}
+
 @Entity({ name: "orders" })
 export class Order {
     @PrimaryGeneratedColumn()
@@ -54,14 +59,20 @@ export class Order {
     })
     status: OrderStatus;
 
-    @Column()
+    @Column({ default: null })
     shipped_on: Date;
 
     @Column()
-    tracking_url: Date;
+    tracking_url: string;
 
-    @Column()
+    @Column({ default: null })
     delivered_on: Date;
+
+    @Column({
+        type: "enum",
+        enum: SendVia,
+    })
+    send_via: SendVia;
 
     @CreateDateColumn()
     created_at: Date;

@@ -12,7 +12,7 @@ export class OrderService {
   constructor(@InjectRepository(Order) private readonly orderRepository: Repository<Order>, private hashService: HashService) { }
   async create(createOrderDto: CreateOrderDto, user: Partial<User>) {
     const createdOrders: Order[] = [];
-    const { recipient_list, occasion_id, email_template_id, email_template_body } = createOrderDto;
+    const { recipient_list, occasion_id, email_template_id, email_template_body, send_via } = createOrderDto;
 
     for (let recipient of recipient_list) {
       const newOrder = this.orderRepository.create({
@@ -22,7 +22,8 @@ export class OrderService {
         email_template_body,
         name: recipient.name,
         email: recipient.email,
-        price_id:recipient.price_id
+        price_id: recipient.price_id,
+        send_via
       });
 
       const savedOrder = await this.orderRepository.save(newOrder);

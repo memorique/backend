@@ -1,7 +1,8 @@
 import { Type } from "class-transformer";
-import { ArrayMinSize, IS_LENGTH, IsArray, isArray, IsNotEmpty, IsString, ValidateNested } from "class-validator";
+import { ArrayMinSize, IS_LENGTH, IsArray, isArray, IsEnum, IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator";
 import { RecipientDto } from "./recipient.dto";
 import { IsUniqueEmail } from "src/common/validators/recipient-unique-email.validator";
+import { SendVia } from "../entities/order.entity";
 
 export class CreateOrderDto {
     @IsString()
@@ -15,6 +16,10 @@ export class CreateOrderDto {
     @IsString()
     @IsNotEmpty()
     email_template_body: string;
+
+    @IsEnum(SendVia)
+    @IsNotEmpty()
+    send_via: SendVia;
 
     @IsArray()
     @ArrayMinSize(1, { message: 'At least one recipient is required' })
